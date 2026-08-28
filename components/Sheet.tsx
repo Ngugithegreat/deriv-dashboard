@@ -39,13 +39,13 @@ export function Sheet({
       <div
         className={
           side === "bottom"
-            ? "relative mt-auto w-full animate-sheet-up rounded-t-3xl bg-white p-5 pb-8 shadow-pop sm:mx-auto sm:mb-8 sm:max-w-md sm:rounded-3xl"
-            : "relative ml-auto h-full w-full max-w-sm animate-fade-up overflow-y-auto bg-white p-5 shadow-pop"
+            ? "relative mt-auto w-full animate-sheet-up rounded-t-3xl bg-surface p-5 pb-8 shadow-pop sm:mx-auto sm:mb-8 sm:max-w-md sm:rounded-3xl"
+            : "relative ml-auto h-full w-full max-w-sm animate-fade-up overflow-y-auto bg-surface p-5 shadow-pop"
         }
       >
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-bold tracking-tight">{title}</h3>
-          <button onClick={onClose} className="tap rounded-full p-1.5 text-mist-500 hover:bg-mist-100">
+          <button onClick={onClose} className="tap rounded-full p-1.5 text-muted hover:bg-surface-2">
             <CloseIcon width={20} height={20} />
           </button>
         </div>

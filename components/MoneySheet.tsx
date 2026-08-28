@@ -62,30 +62,30 @@ export function MoneySheet({
               key={id}
               onClick={() => setMethod(id)}
               className={`tap rounded-2xl border p-3 text-left ${
-                method === id ? "border-coral bg-coral/5" : "border-mist-200 hover:border-mist-300"
+                method === id ? "border-coral bg-coral/5" : "border-line hover:border-line"
               }`}
             >
-              <Icon width={20} height={20} className={method === id ? "text-coral" : "text-mist-500"} />
+              <Icon width={20} height={20} className={method === id ? "text-coral" : "text-muted"} />
               <p className="mt-2 text-sm font-semibold">{label}</p>
-              <p className="text-[11px] leading-4 text-mist-500">{hint}</p>
+              <p className="text-[11px] leading-4 text-muted">{hint}</p>
             </button>
           ))}
         </div>
       )}
 
-      <label className="mb-1 block text-sm font-medium text-mist-500">Amount (USD)</label>
+      <label className="mb-1 block text-sm font-medium text-muted">Amount (USD)</label>
       <input
         inputMode="decimal"
         value={amount}
         onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ""))}
-        className="w-full rounded-2xl bg-mist-100 px-4 py-3.5 text-2xl font-bold tabular-nums outline-none ring-coral/40 focus:ring-2"
+        className="w-full rounded-2xl bg-surface-2 px-4 py-3.5 text-2xl font-bold tabular-nums outline-none ring-coral/40 focus:ring-2"
       />
       <div className="mt-3 flex gap-2">
         {CHIPS.map((c) => (
           <button
             key={c}
             onClick={() => setAmount(String(c))}
-            className="tap flex-1 rounded-full border border-mist-200 py-2 text-sm font-semibold hover:border-ink"
+            className="tap flex-1 rounded-full border border-line py-2 text-sm font-semibold hover:border-fg"
           >
             {c}
           </button>
@@ -106,7 +106,7 @@ export function MoneySheet({
       >
         {title} {value > 0 ? `${value.toFixed(2)} USD` : ""}
       </button>
-      <p className="mt-3 text-center text-xs text-mist-500">
+      <p className="mt-3 text-center text-xs text-muted">
         Simulated only — no real money moves in this demo.
       </p>
     </Sheet>
@@ -127,11 +127,11 @@ function Select({
   const { accounts, balanceOf } = useStore();
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-mist-500">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-muted">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-2xl bg-mist-100 px-4 py-3 text-[15px] font-semibold outline-none ring-coral/40 focus:ring-2"
+        className="w-full rounded-2xl bg-surface-2 px-4 py-3 text-[15px] font-semibold outline-none ring-coral/40 focus:ring-2"
       >
         {accounts
           .filter((a) => a.id !== exclude)

@@ -63,14 +63,14 @@ export function TopBar({ left, center }: { left?: ReactNode; center?: ReactNode 
           {notices.map((n) => (
             <li
               key={n.id}
-              className={`rounded-2xl p-4 ${n.unread ? "bg-coral/[0.06] ring-1 ring-coral/20" : "bg-mist-100"}`}
+              className={`rounded-2xl p-4 ${n.unread ? "bg-coral/[0.06] ring-1 ring-coral/20" : "bg-surface-2"}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <p className="font-semibold">{n.title}</p>
                 {n.unread && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-coral" />}
               </div>
-              <p className="mt-1 text-sm text-mist-500">{n.body}</p>
-              <p className="mt-2 text-xs text-mist-500">{timeAgo(Date.now() - n.minutesAgo * 60000, Date.now())}</p>
+              <p className="mt-1 text-sm text-muted">{n.body}</p>
+              <p className="mt-2 text-xs text-muted">{timeAgo(Date.now() - n.minutesAgo * 60000, Date.now())}</p>
             </li>
           ))}
         </ul>
@@ -121,7 +121,7 @@ function AmySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
           <div key={i} className={m.role === "you" ? "flex justify-end" : "flex justify-start"}>
             <p
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
-                m.role === "you" ? "bg-ink-900 text-white" : "bg-mist-100"
+                m.role === "you" ? "bg-ink-900 text-white" : "bg-surface-2"
               }`}
             >
               {m.text}
@@ -134,7 +134,7 @@ function AmySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
           <button
             key={s}
             onClick={() => send(s)}
-            className="tap rounded-full border border-mist-200 px-3 py-1.5 text-xs font-medium text-mist-500 hover:border-ink hover:text-ink"
+            className="tap rounded-full border border-line px-3 py-1.5 text-xs font-medium text-muted hover:border-fg hover:text-fg"
           >
             {s}
           </button>
@@ -151,7 +151,7 @@ function AmySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           placeholder="Ask anything…"
-          className="flex-1 rounded-full bg-mist-100 px-4 py-3 text-sm outline-none ring-coral/40 focus:ring-2"
+          className="flex-1 rounded-full bg-surface-2 px-4 py-3 text-sm outline-none ring-coral/40 focus:ring-2"
         />
         <button className="tap rounded-full bg-coral px-5 text-sm font-bold text-white">Send</button>
       </form>

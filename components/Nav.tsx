@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CandlesIcon, HomeIcon, LogoMark, OptionsIcon, WalletIcon, TrendIcon, ShieldIcon } from "./icons";
+import {
+  CandlesIcon,
+  HomeIcon,
+  LogoMark,
+  OptionsIcon,
+  WalletIcon,
+  TrendIcon,
+  ShieldIcon,
+  TransferIcon,
+} from "./icons";
 
 const TABS = [
   { href: "/", label: "Home", Icon: HomeIcon },
@@ -13,6 +22,7 @@ const TABS = [
 
 const EXTRA = [
   { href: "/markets", label: "Markets", Icon: TrendIcon },
+  { href: "/transactions", label: "Transactions", Icon: TransferIcon },
   { href: "/account", label: "Account", Icon: ShieldIcon },
 ];
 
@@ -23,7 +33,7 @@ function isActive(pathname: string, href: string) {
 export function BottomNav() {
   const pathname = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-mist-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
       <ul className="mx-auto flex max-w-lg">
         {TABS.map(({ href, label, Icon }) => {
           const active = isActive(pathname, href);
@@ -31,7 +41,7 @@ export function BottomNav() {
             <li key={href} className="flex-1">
               <Link
                 href={href}
-                className={`tap flex flex-col items-center gap-1 py-2.5 ${active ? "text-coral" : "text-ink/70"}`}
+                className={`tap flex flex-col items-center gap-1 py-2.5 ${active ? "text-coral" : "text-fg/70"}`}
               >
                 <Icon width={23} height={23} strokeWidth={active ? 2 : 1.7} />
                 <span className={`text-[11px] ${active ? "font-bold" : "font-medium"}`}>{label}</span>
@@ -47,11 +57,11 @@ export function BottomNav() {
 export function SideNav() {
   const pathname = usePathname();
   return (
-    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-1 border-r border-mist-200 bg-white px-4 py-6 lg:flex">
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-1 border-r border-line bg-surface px-4 py-6 lg:flex">
       <Link href="/" className="mb-6 flex items-center gap-2.5 px-2">
         <LogoMark />
         <span className="text-lg font-bold tracking-tight">Deriv</span>
-        <span className="rounded-md bg-mist-100 px-1.5 py-0.5 text-[10px] font-bold text-mist-500">CLONE</span>
+        <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] font-bold text-muted">CLONE</span>
       </Link>
       {[...TABS, ...EXTRA].map(({ href, label, Icon }) => {
         const active = isActive(pathname, href);
@@ -60,7 +70,7 @@ export function SideNav() {
             key={href}
             href={href}
             className={`tap flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-semibold ${
-              active ? "bg-coral/10 text-coral" : "text-ink/75 hover:bg-mist-100"
+              active ? "bg-coral/10 text-coral" : "text-fg/75 hover:bg-surface-2"
             }`}
           >
             <Icon width={21} height={21} />

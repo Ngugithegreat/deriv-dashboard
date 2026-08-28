@@ -41,7 +41,7 @@ export default function MarketsPage() {
               className="w-full bg-transparent text-[15px] text-white placeholder:text-white/40 focus:outline-none"
             />
           </div>
-          <div className="mt-4">
+          <div className="no-bar -mx-4 mt-4 overflow-x-auto px-4 lg:mx-0 lg:px-0">
             <Segmented
               value={group}
               onChange={setGroup}
@@ -56,8 +56,8 @@ export default function MarketsPage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-white px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
-        <SectionTitle action={<span className="text-xs text-mist-500">{list.length} shown</span>}>
+      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+        <SectionTitle action={<span className="text-xs text-muted">{list.length} shown</span>}>
           Instruments
         </SectionTitle>
         <ul className="space-y-2 pb-8">
@@ -67,7 +67,7 @@ export default function MarketsPage() {
             </li>
           ))}
           {!list.length && (
-            <li className="rounded-2xl bg-mist-100 p-8 text-center text-sm text-mist-500">
+            <li className="rounded-2xl bg-surface-2 p-8 text-center text-sm text-muted">
               No market matches “{q}”.
             </li>
           )}

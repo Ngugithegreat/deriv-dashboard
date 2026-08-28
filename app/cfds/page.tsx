@@ -56,19 +56,19 @@ export default function CfdsPage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-white px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
         <SectionTitle>My accounts</SectionTitle>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <AccountCard account={mt5} />
           <button
             onClick={() => setSheet("transfer")}
-            className="tap flex flex-col items-start justify-center rounded-2xl border-2 border-dashed border-mist-200 p-4 text-left hover:border-coral/50"
+            className="tap flex flex-col items-start justify-center rounded-2xl border-2 border-dashed border-line p-4 text-left hover:border-coral/50"
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-mist-100 text-mist-500">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-surface-2 text-muted">
               <PlusIcon width={22} height={22} />
             </span>
             <p className="mt-4 text-[15px] font-semibold">Add account</p>
-            <p className="text-xs text-mist-500">Swap-free, Zero spread…</p>
+            <p className="text-xs text-muted">Swap-free, Zero spread…</p>
           </button>
         </div>
 
@@ -84,8 +84,8 @@ export default function CfdsPage() {
           </SectionTitle>
           <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {SPECS.map((s) => (
-              <div key={s.label} className="rounded-2xl bg-mist-100 p-4">
-                <dt className="text-xs text-mist-500">{s.label}</dt>
+              <div key={s.label} className="rounded-2xl bg-surface-2 p-4">
+                <dt className="text-xs text-muted">{s.label}</dt>
                 <dd className="mt-1 text-[15px] font-bold">{s.value}</dd>
               </div>
             ))}

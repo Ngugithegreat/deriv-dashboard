@@ -59,7 +59,7 @@ export function PromoRail() {
           <span
             key={p.id}
             className={`h-1.5 rounded-full transition-all ${
-              i === index ? "w-6 bg-ink" : "w-1.5 bg-mist-300"
+              i === index ? "w-6 bg-fg" : "w-1.5 bg-line"
             }`}
           />
         ))}

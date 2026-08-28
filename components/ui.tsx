@@ -44,8 +44,8 @@ export function Segmented<T extends string>({
 }) {
   return (
     <div
-      className={`inline-flex rounded-full p-1 ${
-        tone === "dark" ? "bg-white/10" : "bg-mist-100"
+      className={`inline-flex w-max shrink-0 rounded-full p-1 ${
+        tone === "dark" ? "bg-white/10" : "bg-surface-2"
       }`}
     >
       {options.map((o) => {
@@ -54,14 +54,14 @@ export function Segmented<T extends string>({
           <button
             key={o.value}
             onClick={() => onChange(o.value)}
-            className={`tap rounded-full px-5 py-1.5 text-sm font-bold ${
+            className={`tap whitespace-nowrap rounded-full px-5 py-1.5 text-sm font-bold ${
               active
                 ? tone === "dark"
                   ? "bg-white/20 text-white"
-                  : "bg-white text-ink shadow-sm"
+                  : "bg-surface text-fg shadow-sm"
                 : tone === "dark"
                   ? "text-white/60"
-                  : "text-mist-500"
+                  : "text-muted"
             }`}
           >
             {o.label}
@@ -133,8 +133,8 @@ export function Card({
   return (
     <Tag
       onClick={onClick}
-      className={`tap w-full rounded-2xl bg-mist-100 p-4 text-left ${
-        onClick ? "hover:bg-mist-200" : ""
+      className={`tap w-full rounded-2xl bg-surface-2 p-4 text-left ${
+        onClick ? "hover:bg-surface-3" : ""
       } ${className}`}
     >
       {children}

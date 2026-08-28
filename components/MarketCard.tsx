@@ -10,7 +10,7 @@ export function MarketTile({ market, quote }: { market: Market; quote: Quote }) 
   return (
     <Link
       href={`/markets/${market.id}`}
-      className="tap block rounded-2xl bg-mist-100 p-4 hover:bg-mist-200"
+      className="tap block rounded-2xl bg-surface-2 p-4 hover:bg-surface-3"
     >
       <div className="flex items-center gap-1.5">
         <span className="rounded-md bg-ink-900 px-1.5 py-0.5 text-[10px] font-bold text-white">{market.badge}</span>
@@ -22,7 +22,7 @@ export function MarketTile({ market, quote }: { market: Market; quote: Quote }) 
         <Sparkline series={quote.series} up={up} />
         <span className={`text-sm font-semibold tabular-nums ${up ? "text-mint" : "text-coral"}`}>
           {signed(quote.change)}{" "}
-          <span className="text-xs font-medium text-mist-500">(5m)</span>
+          <span className="text-xs font-medium text-muted">(5m)</span>
         </span>
       </div>
     </Link>
@@ -34,14 +34,14 @@ export function MarketRow({ market, quote }: { market: Market; quote: Quote }) {
   return (
     <Link
       href={`/markets/${market.id}`}
-      className="tap flex items-center gap-3 rounded-2xl bg-mist-100 px-4 py-3 hover:bg-mist-200"
+      className="tap flex items-center gap-3 rounded-2xl bg-surface-2 px-4 py-3 hover:bg-surface-3"
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-ink-900 text-xs font-bold text-white">
         {market.badge}
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[15px] font-semibold">{market.name}</p>
-        <p className="text-xs text-mist-500">{market.short} · {market.tick}</p>
+        <p className="text-xs text-muted">{market.short} · {market.tick}</p>
       </div>
       <Sparkline series={quote.series} up={up} width={70} height={28} />
       <div className="w-24 text-right">

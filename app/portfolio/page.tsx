@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Hero } from "@/components/Hero";
 import { TopBar } from "@/components/TopBar";
 import { AccountCard } from "@/components/AccountCard";
@@ -80,7 +81,7 @@ export default function PortfolioPage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-white px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
         {tab === "Overview" && (
           <>
             <SectionTitle>Browse all payment methods</SectionTitle>
@@ -89,27 +90,35 @@ export default function PortfolioPage() {
                 <li key={id}>
                   <button
                     onClick={() => setSheet("deposit")}
-                    className="tap flex w-full items-center gap-4 rounded-2xl bg-mist-100 p-4 text-left hover:bg-mist-200"
+                    className="tap flex w-full items-center gap-4 rounded-2xl bg-surface-2 p-4 text-left hover:bg-surface-3"
                   >
-                    <Icon width={26} height={26} className="shrink-0 text-ink" />
+                    <Icon width={26} height={26} className="shrink-0 text-fg" />
                     <span className="min-w-0 flex-1">
                       <span className="block text-[17px] font-semibold">{title}</span>
-                      <span className="mt-0.5 block text-sm leading-5 text-mist-500">{body}</span>
+                      <span className="mt-0.5 block text-sm leading-5 text-muted">{body}</span>
                     </span>
-                    <ChevronRight width={18} height={18} className="shrink-0 text-mist-500" />
+                    <ChevronRight width={18} height={18} className="shrink-0 text-muted" />
                   </button>
                 </li>
               ))}
             </ul>
 
             <div className="mt-7 pb-8">
-              <SectionTitle>Recent transactions</SectionTitle>
-              <ul className="divide-y divide-mist-200 overflow-hidden rounded-2xl bg-mist-100">
+              <SectionTitle
+                action={
+                  <Link href="/transactions" className="flex items-center gap-0.5 text-sm font-semibold text-coral">
+                    Statement <ChevronRight width={15} height={15} />
+                  </Link>
+                }
+              >
+                Recent transactions
+              </SectionTitle>
+              <ul className="divide-y divide-line overflow-hidden rounded-2xl bg-surface-2">
                 {txns.map((t) => (
                   <li key={t.id} className="flex items-center justify-between gap-3 px-4 py-3.5">
                     <div className="min-w-0">
                       <p className="truncate text-[15px] font-semibold">{t.label}</p>
-                      <p className="truncate text-xs text-mist-500">{t.method}</p>
+                      <p className="truncate text-xs text-muted">{t.method}</p>
                     </div>
                     <div className="text-right">
                       <Amount value={t.amount} currency={t.currency} size="sm" />
@@ -136,8 +145,8 @@ export default function PortfolioPage() {
                 <AccountCard key={a.id} account={a} />
               ))}
             </div>
-            <div className="mt-6 rounded-2xl bg-mist-100 p-5">
-              <p className="text-sm text-mist-500">Available to withdraw</p>
+            <div className="mt-6 rounded-2xl bg-surface-2 p-5">
+              <p className="text-sm text-muted">Available to withdraw</p>
               <Amount value={walletTotal} size="lg" />
               <button
                 onClick={() => setSheet("withdraw")}
@@ -159,9 +168,9 @@ export default function PortfolioPage() {
                 { t: "Payment agent", d: "Serve traders in your country and earn on volume.", cta: "Become an agent" },
                 { t: "API developer", d: "Build your own terminal on the public WebSocket API.", cta: "Read the docs" },
               ].map((x) => (
-                <div key={x.t} className="rounded-2xl bg-mist-100 p-5">
+                <div key={x.t} className="rounded-2xl bg-surface-2 p-5">
                   <p className="text-[17px] font-bold">{x.t}</p>
-                  <p className="mt-1 text-sm leading-5 text-mist-500">{x.d}</p>
+                  <p className="mt-1 text-sm leading-5 text-muted">{x.d}</p>
                   <span className="mt-3 inline-flex items-center gap-0.5 text-sm font-semibold text-coral">
                     {x.cta} <ChevronRight width={15} height={15} />
                   </span>
@@ -176,7 +185,7 @@ export default function PortfolioPage() {
             <SectionTitle>Verified agents near you</SectionTitle>
             <ul className="space-y-3">
               {AGENTS.map((a) => (
-                <li key={a.name} className="flex items-center gap-4 rounded-2xl bg-mist-100 p-4">
+                <li key={a.name} className="flex items-center gap-4 rounded-2xl bg-surface-2 p-4">
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ink-900 text-sm font-bold text-white">
                     {a.name.slice(0, 2).toUpperCase()}
                   </span>
@@ -185,7 +194,7 @@ export default function PortfolioPage() {
                       {a.name}
                       <ShieldIcon width={15} height={15} className="text-mint" />
                     </p>
-                    <p className="text-xs text-mist-500">
+                    <p className="text-xs text-muted">
                       {a.country} · fee {a.fee} · {a.time} · ★ {a.rating}
                     </p>
                   </div>
@@ -204,9 +213,9 @@ export default function PortfolioPage() {
         {tab === "Trading" && (
           <div className="pb-8">
             <SectionTitle>Open positions</SectionTitle>
-            <div className="rounded-2xl bg-mist-100 p-8 text-center">
+            <div className="rounded-2xl bg-surface-2 p-8 text-center">
               <p className="text-[17px] font-semibold">No open positions</p>
-              <p className="mx-auto mt-1 max-w-xs text-sm text-mist-500">
+              <p className="mx-auto mt-1 max-w-xs text-sm text-muted">
                 Positions you open on Options or MT5 will appear here with live profit and loss.
               </p>
               <button

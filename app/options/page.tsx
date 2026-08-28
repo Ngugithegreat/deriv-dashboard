@@ -51,7 +51,7 @@ export default function OptionsPage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-white px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
         <SectionTitle
           action={
             <Link href="/markets" className="flex items-center gap-0.5 text-sm font-semibold text-coral">
@@ -76,9 +76,9 @@ export default function OptionsPage() {
               { t: "Matches / Differs", d: "Call the last digit of the tick" },
               { t: "Touch / No touch", d: "Will price touch the barrier?" },
             ].map((x) => (
-              <div key={x.t} className="rounded-2xl bg-mist-100 p-4">
+              <div key={x.t} className="rounded-2xl bg-surface-2 p-4">
                 <p className="text-[15px] font-semibold">{x.t}</p>
-                <p className="mt-1 text-xs leading-4 text-mist-500">{x.d}</p>
+                <p className="mt-1 text-xs leading-4 text-muted">{x.d}</p>
               </div>
             ))}
           </div>

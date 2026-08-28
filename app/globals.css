@@ -3,8 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --page: #ffffff;
-  --page-alt: #f4f5f7;
+  --page: 244 245 247;
+  --surface: 255 255 255;
+  --surface-2: 244 245 247;
+  --surface-3: 234 236 239;
+  --line: 234 236 239;
+  --muted: 126 131 136;
+  --fg: 14 14 14;
+  color-scheme: light;
+}
+
+.dark {
+  --page: 10 11 13;
+  --surface: 21 23 28;
+  --surface-2: 32 36 47;
+  --surface-3: 42 46 59;
+  --line: 46 51 64;
+  --muted: 150 157 168;
+  --fg: 244 245 247;
+  color-scheme: dark;
 }
 
 html,
@@ -13,10 +30,11 @@ body {
 }
 
 body {
-  background: var(--page-alt);
-  color: #0e0e0e;
+  background: rgb(var(--page));
+  color: rgb(var(--fg));
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* hide scrollbars on horizontal rails */

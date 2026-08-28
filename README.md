@@ -16,7 +16,8 @@ there is no backend, no real account and no real money.
 | `/portfolio` | Portfolio — Overview / Wallet / Partners / Payment agents / Trading tabs, payment methods, transactions |
 | `/markets` | Searchable instrument list (derived, forex, crypto) with a live feed |
 | `/markets/[id]` | Market detail — full-width live chart and a Rise/Fall trade ticket |
-| `/account` | Profile, verification badge, preferences, settings rows |
+| `/transactions` | Full statement — deposit/withdrawal/transfer filters and in/out/pending totals |
+| `/account` | Profile, verification badge, appearance + preferences, settings rows |
 
 ## Interactions that actually work
 
@@ -27,6 +28,9 @@ there is no backend, no real account and no real money.
 - **Ask Amy** assistant sheet that answers from the on-screen account data.
 - **Live quotes** — a deterministic seeded random walk starts the series (so SSR and hydration match) and then ticks in the browser.
 - **Responsive** — bottom tab bar on mobile, persistent sidebar and multi-column grids from `lg` up.
+- **Light / dark / system theme**, chosen in Account → Appearance, applied before first paint so there is no flash.
+- **Session persistence** — balances, transactions, notifications, mode and theme survive a reload via `localStorage` (Account → Reset demo data puts it back).
+- **Installable** — web manifest with icon, name and theme colour.
 
 ## Run it
 

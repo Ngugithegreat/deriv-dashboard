@@ -105,9 +105,9 @@ export default function MarketDetailPage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-white px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
         <SectionTitle>Place a trade</SectionTitle>
-        <div className="rounded-2xl bg-mist-100 p-4">
+        <div className="rounded-2xl bg-surface-2 p-4">
           <Segmented
             tone="light"
             value={dir}
@@ -119,20 +119,20 @@ export default function MarketDetailPage() {
           />
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <label className="block">
-              <span className="mb-1 block text-sm font-medium text-mist-500">Stake (USD)</span>
+              <span className="mb-1 block text-sm font-medium text-muted">Stake (USD)</span>
               <input
                 inputMode="decimal"
                 value={stake}
                 onChange={(e) => setStake(e.target.value.replace(/[^0-9.]/g, ""))}
-                className="w-full rounded-xl bg-white px-4 py-3 text-lg font-bold tabular-nums outline-none ring-coral/40 focus:ring-2"
+                className="w-full rounded-xl bg-surface px-4 py-3 text-lg font-bold tabular-nums outline-none ring-coral/40 focus:ring-2"
               />
             </label>
             <label className="block">
-              <span className="mb-1 block text-sm font-medium text-mist-500">Duration</span>
+              <span className="mb-1 block text-sm font-medium text-muted">Duration</span>
               <select
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                className="w-full rounded-xl bg-white px-4 py-3.5 text-[15px] font-semibold outline-none ring-coral/40 focus:ring-2"
+                className="w-full rounded-xl bg-surface px-4 py-3.5 text-[15px] font-semibold outline-none ring-coral/40 focus:ring-2"
               >
                 {DURATIONS.map((d) => (
                   <option key={d}>{d}</option>
@@ -140,8 +140,8 @@ export default function MarketDetailPage() {
               </select>
             </label>
           </div>
-          <div className="mt-4 flex items-center justify-between rounded-xl bg-white px-4 py-3">
-            <span className="text-sm text-mist-500">Payout if correct</span>
+          <div className="mt-4 flex items-center justify-between rounded-xl bg-surface px-4 py-3">
+            <span className="text-sm text-muted">Payout if correct</span>
             <span className="text-lg font-bold tabular-nums">{payout.toFixed(2)} USD</span>
           </div>
           <button
@@ -154,7 +154,7 @@ export default function MarketDetailPage() {
           >
             {dir === "rise" ? "Buy Rise" : "Buy Fall"}
           </button>
-          <p className="mt-3 text-center text-xs text-mist-500">
+          <p className="mt-3 text-center text-xs text-muted">
             Demo interface — contracts are not sent anywhere.
           </p>
         </div>
@@ -168,8 +168,8 @@ export default function MarketDetailPage() {
               { k: "Tick interval", v: market.tick },
               { k: "Trading hours", v: market.group === "derived" ? "24/7" : "24/5" },
             ].map((x) => (
-              <div key={x.k} className="rounded-2xl bg-mist-100 p-4">
-                <dt className="text-xs text-mist-500">{x.k}</dt>
+              <div key={x.k} className="rounded-2xl bg-surface-2 p-4">
+                <dt className="text-xs text-muted">{x.k}</dt>
                 <dd className="mt-1 text-[15px] font-bold capitalize">{x.v}</dd>
               </div>
             ))}

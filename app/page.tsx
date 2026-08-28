@@ -10,7 +10,6 @@ import { MoneySheet } from "@/components/MoneySheet";
 import { SectionTitle, Amount } from "@/components/ui";
 import { useStore } from "./providers";
 import { ChevronRight, TrendIcon, P2PIcon, AgentIcon, SparkleIcon } from "@/components/icons";
-import { timeAgo } from "@/lib/format";
 
 const EXPLORE = [
   { href: "/markets", label: "Markets", body: "Live derived, forex & crypto quotes", Icon: TrendIcon },
@@ -20,7 +19,7 @@ const EXPLORE = [
 ];
 
 export default function HomePage() {
-  const { accounts, estTotal, txns, updatedAt } = useStore();
+  const { accounts, estTotal, txns } = useStore();
   const [sheet, setSheet] = useState(false);
   const funded = estTotal > 0;
 
@@ -53,7 +52,7 @@ export default function HomePage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-white px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
         <SectionTitle
           action={
             <Link href="/portfolio" className="flex items-center gap-0.5 text-sm font-semibold text-coral">
@@ -76,10 +75,10 @@ export default function HomePage() {
           <SectionTitle>Explore Deriv</SectionTitle>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {EXPLORE.map(({ href, label, body, Icon }) => (
-              <Link key={label} href={href} className="tap rounded-2xl bg-mist-100 p-4 hover:bg-mist-200">
+              <Link key={label} href={href} className="tap rounded-2xl bg-surface-2 p-4 hover:bg-surface-3">
                 <Icon width={22} height={22} className="text-coral" />
                 <p className="mt-3 text-[15px] font-semibold">{label}</p>
-                <p className="mt-0.5 text-xs leading-4 text-mist-500">{body}</p>
+                <p className="mt-0.5 text-xs leading-4 text-muted">{body}</p>
               </Link>
             ))}
           </div>
@@ -87,16 +86,20 @@ export default function HomePage() {
 
         <div className="mt-7 pb-8">
           <SectionTitle
-            action={<span className="text-xs text-mist-500">Updated {updatedAt ? timeAgo(updatedAt, Date.now()) : "—"}</span>}
+            action={
+              <Link href="/transactions" className="flex items-center gap-0.5 text-sm font-semibold text-coral">
+                All <ChevronRight width={15} height={15} />
+              </Link>
+            }
           >
             Recent activity
           </SectionTitle>
-          <ul className="divide-y divide-mist-200 overflow-hidden rounded-2xl bg-mist-100">
+          <ul className="divide-y divide-line overflow-hidden rounded-2xl bg-surface-2">
             {txns.slice(0, 4).map((t) => (
               <li key={t.id} className="flex items-center justify-between gap-3 px-4 py-3.5">
                 <div className="min-w-0">
                   <p className="truncate text-[15px] font-semibold">{t.label}</p>
-                  <p className="truncate text-xs text-mist-500">{t.method}</p>
+                  <p className="truncate text-xs text-muted">{t.method}</p>
                 </div>
                 <div className="text-right">
                   <Amount value={t.amount} currency={t.currency} size="sm" />

@@ -36,7 +36,7 @@ export function AccountCard({ account, href }: { account: Account; href?: string
         {account.title}
         {account.subtitle && account.kind === "mt5" && (
           <>
-            <span className="mx-1.5 font-light text-mist-300">|</span>
+            <span className="mx-1.5 font-light text-line">|</span>
             {account.subtitle}
           </>
         )}
@@ -47,7 +47,7 @@ export function AccountCard({ account, href }: { account: Account; href?: string
     </>
   );
 
-  const cls = "tap block rounded-2xl bg-mist-100 p-4 hover:bg-mist-200";
+  const cls = "tap block rounded-2xl bg-surface-2 p-4 hover:bg-surface-3";
   return href ? (
     <Link href={href} className={cls}>
       {body}

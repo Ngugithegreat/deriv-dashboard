@@ -11,6 +11,9 @@ import {
 } from "react";
 
 export type Mode = "real" | "demo";
+export type Theme = "light" | "dark" | "system";
+
+export const STORAGE_KEY = "deriv-dashboard:v1";
 
 export type Account = {
   id: string;
@@ -42,6 +45,9 @@ export type Notice = {
 
 type Store = {
   mode: Mode;
+  theme: Theme;
+  setTheme: (t: Theme) => void;
+  resetDemo: () => void;
   setMode: (m: Mode) => void;
   hidden: boolean;
   toggleHidden: () => void;
@@ -99,8 +105,52 @@ export function Providers({ children }: { children: ReactNode }) {
   const [txns, setTxns] = useState<Txn[]>(TXNS);
   const [updatedAt, setUpdatedAt] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
+  const [theme, setTheme] = useState<Theme>("system");
+  const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => setUpdatedAt(Date.now()), []);
+  /* Restore the saved session after mount so SSR and hydration agree. */
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved.mode === "real" || saved.mode === "demo") setMode(saved.mode);
+        if (typeof saved.hidden === "boolean") setHidden(saved.hidden);
+        if (Array.isArray(saved.accounts) && saved.accounts.length) setAccounts(saved.accounts);
+        if (Array.isArray(saved.txns)) setTxns(saved.txns);
+        if (Array.isArray(saved.notices)) setNotices(saved.notices);
+        if (saved.theme) setTheme(saved.theme);
+      }
+    } catch {
+      /* corrupt or unavailable storage — fall back to defaults */
+    }
+    setLoaded(true);
+    setUpdatedAt(Date.now());
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ mode, hidden, accounts, txns, notices, theme }),
+      );
+    } catch {
+      /* private mode / quota — persistence is best-effort */
+    }
+  }, [loaded, mode, hidden, accounts, txns, notices, theme]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () =>
+      document.documentElement.classList.toggle(
+        "dark",
+        theme === "dark" || (theme === "system" && mq.matches),
+      );
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [theme]);
 
   useEffect(() => {
     if (!toast) return;
@@ -159,6 +209,16 @@ export function Providers({ children }: { children: ReactNode }) {
     [patch, pushTxn, say],
   );
 
+  const resetDemo = useCallback(() => {
+    setAccounts(ACCOUNTS);
+    setTxns(TXNS);
+    setNotices(NOTICES);
+    setMode("real");
+    setHidden(false);
+    setUpdatedAt(Date.now());
+    setToast("Demo data reset");
+  }, []);
+
   const markAllRead = useCallback(
     () => setNotices((prev) => prev.map((n) => ({ ...n, unread: false }))),
     [],
@@ -171,6 +231,9 @@ export function Providers({ children }: { children: ReactNode }) {
     return {
       mode,
       setMode,
+      theme,
+      setTheme,
+      resetDemo,
       hidden,
       toggleHidden: () => setHidden((h) => !h),
       accounts,
@@ -194,7 +257,23 @@ export function Providers({ children }: { children: ReactNode }) {
       toast,
       say,
     };
-  }, [mode, hidden, accounts, balanceOf, txns, notices, markAllRead, deposit, withdraw, transfer, updatedAt, toast, say]);
+  }, [
+    mode,
+    theme,
+    resetDemo,
+    hidden,
+    accounts,
+    balanceOf,
+    txns,
+    notices,
+    markAllRead,
+    deposit,
+    withdraw,
+    transfer,
+    updatedAt,
+    toast,
+    say,
+  ]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

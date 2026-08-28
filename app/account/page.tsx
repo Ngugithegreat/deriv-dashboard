@@ -17,7 +17,7 @@ const ROWS = [
 ];
 
 export default function AccountPage() {
-  const { hidden, toggleHidden, mode, setMode, say } = useStore();
+  const { hidden, toggleHidden, mode, setMode, say, theme, setTheme, resetDemo } = useStore();
 
   return (
     <>
@@ -37,37 +37,37 @@ export default function AccountPage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-white px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
         <SectionTitle>Preferences</SectionTitle>
         <div className="space-y-3">
-          <div className="flex items-center justify-between rounded-2xl bg-mist-100 p-4">
+          <div className="flex items-center justify-between rounded-2xl bg-surface-2 p-4">
             <div>
               <p className="text-[15px] font-semibold">Hide balances</p>
-              <p className="text-xs text-mist-500">Blur every amount across the app</p>
+              <p className="text-xs text-muted">Blur every amount across the app</p>
             </div>
             <button
               onClick={toggleHidden}
               role="switch"
               aria-checked={hidden}
-              className={`tap h-7 w-12 rounded-full p-1 transition-colors ${hidden ? "bg-coral" : "bg-mist-300"}`}
+              className={`tap h-7 w-12 rounded-full p-1 transition-colors ${hidden ? "bg-coral" : "bg-line"}`}
             >
               <span
-                className={`block h-5 w-5 rounded-full bg-white transition-transform ${hidden ? "translate-x-5" : ""}`}
+                className={`block h-5 w-5 rounded-full bg-surface transition-transform ${hidden ? "translate-x-5" : ""}`}
               />
             </button>
           </div>
-          <div className="flex items-center justify-between rounded-2xl bg-mist-100 p-4">
+          <div className="flex items-center justify-between rounded-2xl bg-surface-2 p-4">
             <div>
               <p className="text-[15px] font-semibold">Default account</p>
-              <p className="text-xs text-mist-500">Open the app on this account type</p>
+              <p className="text-xs text-muted">Open the app on this account type</p>
             </div>
-            <div className="flex rounded-full bg-white p-1">
+            <div className="flex rounded-full bg-surface p-1">
               {(["real", "demo"] as const).map((m) => (
                 <button
                   key={m}
                   onClick={() => setMode(m)}
                   className={`tap rounded-full px-4 py-1.5 text-sm font-bold capitalize ${
-                    mode === m ? "bg-ink-900 text-white" : "text-mist-500"
+                    mode === m ? "bg-ink-900 text-white" : "text-muted"
                   }`}
                 >
                   {m}
@@ -77,20 +77,54 @@ export default function AccountPage() {
           </div>
         </div>
 
+        <div className="mt-3 space-y-3">
+          <div className="flex items-center justify-between gap-3 rounded-2xl bg-surface-2 p-4">
+            <div>
+              <p className="text-[15px] font-semibold">Appearance</p>
+              <p className="text-xs text-muted">Follows your device unless you pick one</p>
+            </div>
+            <div className="flex rounded-full bg-surface p-1">
+              {(["light", "dark", "system"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTheme(t)}
+                  className={`tap rounded-full px-3 py-1.5 text-xs font-bold capitalize ${
+                    theme === t ? "bg-ink-900 text-white" : "text-muted"
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center justify-between gap-3 rounded-2xl bg-surface-2 p-4">
+            <div>
+              <p className="text-[15px] font-semibold">Reset demo data</p>
+              <p className="text-xs text-muted">Restore the starting balances and transactions</p>
+            </div>
+            <button
+              onClick={resetDemo}
+              className="tap shrink-0 rounded-full border border-line px-4 py-2 text-sm font-bold hover:border-coral hover:text-coral"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+
         <div className="mt-7">
           <SectionTitle>Account settings</SectionTitle>
-          <ul className="divide-y divide-mist-200 overflow-hidden rounded-2xl bg-mist-100">
+          <ul className="divide-y divide-line overflow-hidden rounded-2xl bg-surface-2">
             {ROWS.map((r) => (
               <li key={r.t}>
                 <button
                   onClick={() => say(`${r.t} — not part of this UI demo`)}
-                  className="tap flex w-full items-center gap-3 px-4 py-3.5 text-left hover:bg-mist-200"
+                  className="tap flex w-full items-center gap-3 px-4 py-3.5 text-left hover:bg-surface-3"
                 >
                   <span className="min-w-0 flex-1">
                     <span className="block text-[15px] font-semibold">{r.t}</span>
-                    <span className="block text-xs text-mist-500">{r.d}</span>
+                    <span className="block text-xs text-muted">{r.d}</span>
                   </span>
-                  <ChevronRight width={18} height={18} className="text-mist-500" />
+                  <ChevronRight width={18} height={18} className="text-muted" />
                 </button>
               </li>
             ))}
@@ -100,7 +134,7 @@ export default function AccountPage() {
         <div className="mt-7 pb-8">
           <Link
             href="/"
-            className="tap flex items-center justify-center rounded-full border border-mist-200 py-3.5 text-[15px] font-bold text-ink hover:border-ink"
+            className="tap flex items-center justify-center rounded-full border border-line py-3.5 text-[15px] font-bold text-fg hover:border-fg"
           >
             Back to dashboard
           </Link>
