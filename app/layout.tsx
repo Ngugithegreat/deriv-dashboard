@@ -16,6 +16,13 @@ export const metadata: Metadata = {
   title: "Deriv Dashboard — UI clone",
   description:
     "A responsive trading-dashboard interface inspired by the Deriv app: accounts, live derived-index quotes, cashier flows and portfolio.",
+  applicationName: "Deriv Dashboard",
+  openGraph: {
+    title: "Deriv Dashboard — UI clone",
+    description:
+      "Accounts, live derived-index quotes, cashier flows and portfolio — a front-end demo, no real money.",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
