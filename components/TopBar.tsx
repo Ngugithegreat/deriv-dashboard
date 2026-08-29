@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import Link from "next/link";
 import { useStore } from "@/app/providers";
 import { BellIcon, EyeIcon, EyeOffIcon, SparkleIcon } from "./icons";
 import { Sheet } from "./Sheet";
 import { timeAgo } from "@/lib/format";
+import { ProfileDrawer } from "./ProfileDrawer";
 
 export function AmyPill({ onClick }: { onClick: () => void }) {
   return (
-    <button onClick={onClick} className="tap amy-ring rounded-full p-[1.5px] shadow-[0_6px_18px_rgba(168,85,247,0.35)]">
+    <button onClick={onClick} className="tap amy-ring rounded-full p-[1.5px]">
       <span className="flex items-center gap-1.5 rounded-full bg-ink-800 px-4 py-2 text-[15px] font-bold">
         <SparkleIcon width={17} height={17} className="text-fuchsia-300" />
         <span className="bg-gradient-to-r from-fuchsia-300 via-sky-300 to-emerald-300 bg-clip-text text-transparent">
@@ -33,14 +33,14 @@ export function TopBar({ left, center }: { left?: ReactNode; center?: ReactNode 
           <button
             onClick={toggleHidden}
             aria-label={hidden ? "Show balances" : "Hide balances"}
-            className="tap flex h-10 w-10 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10"
+            className="tap flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             {hidden ? <EyeOffIcon width={19} height={19} /> : <EyeIcon width={19} height={19} />}
           </button>
           <button
             onClick={() => setPanel("bell")}
             aria-label="Notifications"
-            className="tap relative flex h-10 w-10 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10"
+            className="tap relative flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             <BellIcon width={19} height={19} />
             {unread > 0 && (
@@ -160,12 +160,17 @@ function AmySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
 }
 
 export function Avatar({ initials = "SM" }: { initials?: string }) {
+  const [open, setOpen] = useState(false);
   return (
-    <Link
-      href="/account"
-      className="tap flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-sm font-bold text-white hover:bg-white/25"
-    >
-      {initials}
-    </Link>
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Account menu"
+        className="tap flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-sm font-bold text-white hover:bg-white/25"
+      >
+        {initials}
+      </button>
+      <ProfileDrawer open={open} onClose={() => setOpen(false)} />
+    </>
   );
 }

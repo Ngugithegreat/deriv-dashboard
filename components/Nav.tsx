@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   CandlesIcon,
+  CandlesSolidIcon,
   HomeIcon,
+  HomeSolidIcon,
+  WalletSolidIcon,
   LogoMark,
   OptionsIcon,
   WalletIcon,
@@ -14,10 +17,10 @@ import {
 } from "./icons";
 
 const TABS = [
-  { href: "/", label: "Home", Icon: HomeIcon },
-  { href: "/cfds", label: "CFDs", Icon: CandlesIcon },
-  { href: "/options", label: "Options", Icon: OptionsIcon },
-  { href: "/portfolio", label: "Portfolio", Icon: WalletIcon },
+  { href: "/", label: "Home", Icon: HomeIcon, Active: HomeSolidIcon },
+  { href: "/cfds", label: "CFDs", Icon: CandlesIcon, Active: CandlesSolidIcon },
+  { href: "/options", label: "Options", Icon: OptionsIcon, Active: OptionsIcon },
+  { href: "/portfolio", label: "Portfolio", Icon: WalletIcon, Active: WalletSolidIcon },
 ];
 
 const EXTRA = [
@@ -35,15 +38,16 @@ export function BottomNav() {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
       <ul className="mx-auto flex max-w-lg">
-        {TABS.map(({ href, label, Icon }) => {
+        {TABS.map(({ href, label, Icon, Active }) => {
           const active = isActive(pathname, href);
+          const Glyph = active ? Active : Icon;
           return (
             <li key={href} className="flex-1">
               <Link
                 href={href}
                 className={`tap flex flex-col items-center gap-1 py-2.5 ${active ? "text-coral" : "text-fg/70"}`}
               >
-                <Icon width={23} height={23} strokeWidth={active ? 2 : 1.7} />
+                <Glyph width={23} height={23} strokeWidth={active ? 2.2 : 1.7} />
                 <span className={`text-[11px] ${active ? "font-bold" : "font-medium"}`}>{label}</span>
               </Link>
             </li>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Market, Quote } from "@/lib/markets";
 import { num, signed } from "@/lib/format";
 import { Sparkline } from "./Sparkline";
+import { AssetCandlesIcon } from "./icons";
 
 export function MarketTile({ market, quote }: { market: Market; quote: Quote }) {
   const up = quote.change >= 0;
@@ -16,7 +17,8 @@ export function MarketTile({ market, quote }: { market: Market; quote: Quote }) 
         <span className="rounded-md bg-ink-900 px-1.5 py-0.5 text-[10px] font-bold text-white">{market.badge}</span>
         <span className="rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold text-white">{market.tick}</span>
       </div>
-      <p className="mt-3 text-[15px] font-semibold leading-5">{market.name}</p>
+      <AssetCandlesIcon className="mt-1" />
+      <p className="mt-2 text-[15px] font-semibold leading-5">{market.name}</p>
       <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight">{num(quote.price, market.digits)}</p>
       <div className="mt-2 flex items-center justify-between gap-2">
         <Sparkline series={quote.series} up={up} />

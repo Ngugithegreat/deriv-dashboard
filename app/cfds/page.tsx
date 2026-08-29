@@ -94,7 +94,7 @@ export default function CfdsPage() {
 
         <div className="mt-7 pb-8">
           <SectionTitle>Featured</SectionTitle>
-          <div className="grain relative overflow-hidden rounded-2xl bg-ink-900 p-6 text-white">
+          <div className="relative overflow-hidden rounded-2xl bg-ink-800 p-6 text-white">
             <div className="max-w-md">
               <p className="text-xs font-bold uppercase tracking-widest text-coral">Deriv MT5</p>
               <h3 className="mt-2 text-2xl font-bold leading-8">

@@ -37,7 +37,7 @@ export function PromoRail() {
         {items.map((p) => (
           <article
             key={p.id}
-            className="grain relative w-[92%] shrink-0 overflow-hidden rounded-2xl bg-ink-800 p-5 text-white sm:w-[420px]"
+            className="relative w-[92%] shrink-0 overflow-hidden rounded-2xl bg-ink-800 p-5 text-white sm:w-[420px]"
           >
             <button
               onClick={() => setDismissed((d) => [...d, p.id])}

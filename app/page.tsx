@@ -19,9 +19,10 @@ const EXPLORE = [
 ];
 
 export default function HomePage() {
-  const { accounts, estTotal, txns } = useStore();
+  const { accounts, cfdTotal, optionsTotal, txns } = useStore();
   const [sheet, setSheet] = useState(false);
-  const funded = estTotal > 0;
+  /* The banner tracks the trading accounts, like the reference app. */
+  const funded = cfdTotal + optionsTotal > 0;
 
   return (
     <>
@@ -38,7 +39,7 @@ export default function HomePage() {
             </div>
             <button
               onClick={() => setSheet(true)}
-              className="tap mt-5 rounded-full bg-coral px-7 py-3.5 text-[17px] font-bold text-white shadow-[0_10px_26px_rgba(255,68,79,0.35)] hover:bg-coral-hover"
+              className="tap mt-5 rounded-full bg-coral px-7 py-3.5 text-[17px] font-bold text-white hover:bg-coral-hover"
             >
               Deposit now
             </button>

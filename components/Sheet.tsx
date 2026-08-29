@@ -39,8 +39,8 @@ export function Sheet({
       <div
         className={
           side === "bottom"
-            ? "relative mt-auto w-full animate-sheet-up rounded-t-3xl bg-surface p-5 pb-8 shadow-pop sm:mx-auto sm:mb-8 sm:max-w-md sm:rounded-3xl"
-            : "relative ml-auto h-full w-full max-w-sm animate-fade-up overflow-y-auto bg-surface p-5 shadow-pop"
+            ? "relative mt-auto w-full animate-sheet-up rounded-t-3xl bg-surface p-5 pb-8 text-fg shadow-pop sm:mx-auto sm:mb-8 sm:max-w-md sm:rounded-3xl"
+            : "relative ml-auto h-full w-full max-w-sm animate-fade-up overflow-y-auto bg-surface p-5 text-fg shadow-pop"
         }
       >
         <div className="mb-4 flex items-center justify-between">

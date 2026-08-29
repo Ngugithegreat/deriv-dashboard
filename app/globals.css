@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --page: 244 245 247;
+  --page: 255 255 255;
   --surface: 255 255 255;
-  --surface-2: 244 245 247;
-  --surface-3: 234 236 239;
-  --line: 234 236 239;
-  --muted: 126 131 136;
+  --surface-2: 242 243 244;
+  --surface-3: 232 234 236;
+  --line: 232 234 236;
+  --muted: 122 124 126;
   --fg: 14 14 14;
   color-scheme: light;
 }
@@ -60,16 +60,6 @@ body {
 
 .amy-ring {
   background: linear-gradient(96deg, #ff444f, #a855f7 38%, #3b82f6 68%, #22d3ee);
-}
-
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0);
-  background-size: 14px 14px;
-  pointer-events: none;
 }
 
 .tap {

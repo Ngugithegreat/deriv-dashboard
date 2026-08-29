@@ -42,6 +42,46 @@ export const WalletIcon = (p: P) => (
   </svg>
 );
 
+/* Solid variants — the reference app fills the active tab icon. */
+export const HomeSolidIcon = (p: P) => (
+  <svg width={24} height={24} viewBox="0 0 24 24" fill="currentColor" {...p}>
+    <path d="M3.5 10.4 12 3.8l8.5 6.6V19a1.4 1.4 0 0 1-1.4 1.4h-3.6v-5.1h-7v5.1H4.9A1.4 1.4 0 0 1 3.5 19z" />
+  </svg>
+);
+
+export const CandlesSolidIcon = (p: P) => (
+  <svg width={24} height={24} viewBox="0 0 24 24" fill="currentColor" {...p}>
+    <rect x="4.6" y="6.7" width="4.8" height="10.6" rx="1.2" />
+    <rect x="14.6" y="6.7" width="4.8" height="10.6" rx="1.2" />
+    <rect x="6.2" y="4" width="1.6" height="3.4" rx=".8" />
+    <rect x="6.2" y="16.6" width="1.6" height="3.4" rx=".8" />
+    <rect x="16.2" y="4" width="1.6" height="3.4" rx=".8" />
+    <rect x="16.2" y="16.6" width="1.6" height="3.4" rx=".8" />
+  </svg>
+);
+
+export const WalletSolidIcon = (p: P) => (
+  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...p}>
+    <rect x="3.2" y="5.6" width="17.6" height="12.8" rx="2.6" fill="currentColor" />
+    <rect x="14.4" y="9.9" width="6.4" height="4.4" rx="2.2" fill="#fff" />
+    <circle cx="16.9" cy="12.1" r="1.1" fill="currentColor" />
+  </svg>
+);
+
+/** Small asset glyph shown on market cards, as in the reference app. */
+export const AssetCandlesIcon = (p: P) => (
+  <svg width={30} height={30} viewBox="0 0 30 30" fill="none" {...p}>
+    <rect x="3.4" y="9" width="3.6" height="12" rx="1.2" fill="#0B2A4A" />
+    <path d="M5.2 6v3.4M5.2 20.6V24" stroke="#0B2A4A" strokeWidth="1.5" strokeLinecap="round" />
+    <rect x="9.6" y="12.4" width="3.6" height="8.6" rx="1.2" fill="#00B8A9" />
+    <path d="M11.4 9.4v3M11.4 20.6v3" stroke="#00B8A9" strokeWidth="1.5" strokeLinecap="round" />
+    <rect x="15.8" y="7.2" width="3.6" height="10.6" rx="1.2" fill="#00B8A9" />
+    <path d="M17.6 4.6v2.6M17.6 17.4V20" stroke="#00B8A9" strokeWidth="1.5" strokeLinecap="round" />
+    <rect x="22" y="11" width="3.6" height="11" rx="1.2" fill="#0B2A4A" />
+    <path d="M23.8 8v3M23.8 21.6V25" stroke="#0B2A4A" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
 export const BellIcon = (p: P) => (
   <svg {...base(p)}>
     <path d="M18 15.2V10a6 6 0 1 0-12 0v5.2L4.6 17.4h14.8z" />

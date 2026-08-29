@@ -94,7 +94,7 @@ export function CircleAction({
       <span
         className={`flex h-14 w-14 items-center justify-center rounded-full ${
           primary
-            ? "bg-coral text-white shadow-[0_8px_20px_rgba(255,68,79,0.35)] group-hover:bg-coral-hover"
+            ? "bg-coral text-white group-hover:bg-coral-hover"
             : "border border-white/35 text-white group-hover:bg-white/10"
         }`}
       >
