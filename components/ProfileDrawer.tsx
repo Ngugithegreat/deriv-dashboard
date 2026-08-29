@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useStore } from "@/app/providers";
+import { useStore, USER } from "@/app/providers";
 import { Sheet } from "./Sheet";
-import { AccountBadge } from "./AccountCard";
+import { AccountMark, AccountTitle } from "./AccountCard";
 import { Amount, Segmented } from "./ui";
 import {
   AgentIcon,
@@ -39,11 +39,11 @@ export function ProfileDrawer({ open, onClose }: { open: boolean; onClose: () =>
       <div className="rounded-2xl bg-ink-800 p-4 text-white">
         <div className="flex items-center gap-3">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-base font-bold">
-            SM
+            {USER.initials}
           </span>
           <div className="min-w-0">
-            <p className="truncate text-[17px] font-bold leading-6">Sam Mwangi</p>
-            <p className="truncate text-xs text-white/60">CR9184472 · sam.mwangi@example.com</p>
+            <p className="truncate text-[17px] font-bold leading-6">{USER.name}</p>
+            <p className="truncate text-xs text-white/60">{USER.id} · {USER.email}</p>
           </div>
         </div>
         <div className="mt-4 flex items-end justify-between gap-3">
@@ -72,13 +72,10 @@ export function ProfileDrawer({ open, onClose }: { open: boolean; onClose: () =>
       <ul className="mt-3 space-y-2">
         {accounts.map((a) => (
           <li key={a.id} className="flex items-center gap-3 rounded-2xl bg-surface-2 px-3 py-2.5">
-            <span className="scale-90">
-              <AccountBadge kind={a.kind} />
-            </span>
+            <AccountMark account={a} size={34} />
             <span className="min-w-0 flex-1">
               <span className="block truncate text-[15px] font-semibold">
-                {a.title}
-                {a.subtitle && a.kind === "mt5" ? ` ${a.subtitle}` : ""}
+                <AccountTitle account={a} />
               </span>
               <span className="block text-xs capitalize text-muted">{mode} · {a.currency}</span>
             </span>

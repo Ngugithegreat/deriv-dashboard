@@ -12,27 +12,42 @@ import {
 
 export type Mode = "real" | "demo";
 export type Theme = "light" | "dark" | "system";
+export type TxnKind = "deposit" | "withdrawal" | "transfer";
 
-export const STORAGE_KEY = "deriv-dashboard:v1";
+export const STORAGE_KEY = "deriv-dashboard:v2";
+
+export const USER = {
+  name: "Biliah Somanga",
+  initials: "BS",
+  id: "019e....0b61",
+  email: "biliah.somanga@example.com",
+};
 
 export type Account = {
   id: string;
-  kind: "mt5" | "options" | "wallet";
+  kind: "wallet" | "crypto" | "mt5" | "options";
   title: string;
-  subtitle?: string;
+  /** Second half of a "CFDs | Standard" style title. */
+  split?: string;
+  badge?: "FIN" | "STD" | "SWF" | "GOLD";
   currency: string;
+  /** USD value of one unit — only crypto wallets need it. */
+  usdRate?: number;
   real: number;
   demo: number;
 };
 
 export type Txn = {
   id: string;
+  kind: TxnKind;
   label: string;
   method: string;
   amount: number;
   currency: string;
   status: "completed" | "pending" | "failed";
-  minutesAgo: number;
+  /** ISO date, grouped by day in the statement views. */
+  date: string;
+  walletId: string;
 };
 
 export type Notice = {
@@ -45,14 +60,17 @@ export type Notice = {
 
 type Store = {
   mode: Mode;
+  setMode: (m: Mode) => void;
   theme: Theme;
   setTheme: (t: Theme) => void;
   resetDemo: () => void;
-  setMode: (m: Mode) => void;
   hidden: boolean;
   toggleHidden: () => void;
   accounts: Account[];
+  wallets: Account[];
+  trading: Account[];
   balanceOf: (a: Account) => number;
+  usdOf: (a: Account) => number;
   cfdTotal: number;
   optionsTotal: number;
   walletTotal: number;
@@ -71,28 +89,32 @@ type Store = {
 };
 
 const ACCOUNTS: Account[] = [
-  { id: "mt5-std", kind: "mt5", title: "CFDs", subtitle: "Standard", currency: "USD", real: 0, demo: 10000 },
+  { id: "wallet-usd", kind: "wallet", title: "US Dollar", currency: "USD", real: 41.6, demo: 10000 },
+  { id: "wallet-usdc", kind: "crypto", title: "USDC (Ethereum)", currency: "USDC", usdRate: 0.99, real: 1, demo: 0 },
+  { id: "mt5-fin", kind: "mt5", title: "Financial", badge: "FIN", currency: "USD", real: 1, demo: 10000 },
+  { id: "mt5-std", kind: "mt5", title: "CFDs", split: "Standard", badge: "STD", currency: "USD", real: 1, demo: 10000 },
+  { id: "mt5-swf", kind: "mt5", title: "Swap-Free", badge: "SWF", currency: "USD", real: 1, demo: 10000 },
   { id: "options", kind: "options", title: "Options", currency: "USD", real: 0, demo: 10000 },
-  { id: "wallet-usd", kind: "wallet", title: "USD Wallet", subtitle: "Bank, card, e-wallet, crypto", currency: "USD", real: 504.78, demo: 0 },
 ];
 
 const TXNS: Txn[] = [
-  { id: "t1", label: "Deposit", method: "Payment agent · AbePay", amount: 250, currency: "USD", status: "completed", minutesAgo: 42 },
-  { id: "t2", label: "Transfer to CFDs", method: "USD Wallet → MT5 Standard", amount: 120, currency: "USD", status: "completed", minutesAgo: 190 },
-  { id: "t3", label: "Withdrawal", method: "P2P · Sell order #48211", amount: 75.5, currency: "USD", status: "pending", minutesAgo: 320 },
-  { id: "t4", label: "Deposit", method: "Crypto · USDT (TRC20)", amount: 400, currency: "USD", status: "completed", minutesAgo: 1440 },
+  { id: "t1", kind: "withdrawal", label: "Withdrawal", method: "P2P · Sell order #48211", amount: 1, currency: "USD", status: "completed", date: "2026-08-24", walletId: "wallet-usd" },
+  { id: "t2", kind: "deposit", label: "Deposit", method: "Payment agent · AbePay", amount: 17.74, currency: "USD", status: "completed", date: "2026-08-24", walletId: "wallet-usd" },
+  { id: "t3", kind: "deposit", label: "Deposit", method: "Card · Visa ••4242", amount: 1, currency: "USD", status: "completed", date: "2026-08-24", walletId: "wallet-usd" },
+  { id: "t4", kind: "deposit", label: "Deposit", method: "Crypto · USDC (Ethereum)", amount: 2.01, currency: "USD", status: "completed", date: "2026-08-24", walletId: "wallet-usd" },
+  { id: "t5", kind: "deposit", label: "Deposit", method: "Payment agent · AbePay", amount: 17.96, currency: "USD", status: "completed", date: "2026-08-24", walletId: "wallet-usd" },
+  { id: "t6", kind: "deposit", label: "Deposit", method: "P2P · Buy order #47980", amount: 2, currency: "USD", status: "completed", date: "2026-08-23", walletId: "wallet-usd" },
+  { id: "t7", kind: "transfer", label: "Transfer", method: "US Dollar → CFDs | Standard", amount: 1, currency: "USD", status: "completed", date: "2026-08-23", walletId: "wallet-usd" },
+  { id: "t8", kind: "deposit", label: "Deposit", method: "Crypto · USDC (Ethereum)", amount: 1, currency: "USDC", status: "completed", date: "2026-08-22", walletId: "wallet-usdc" },
+  { id: "t9", kind: "withdrawal", label: "Withdrawal", method: "Payment agent · AbePay", amount: 5.4, currency: "USD", status: "pending", date: "2026-08-22", walletId: "wallet-usd" },
 ];
 
 const NOTICES: Notice[] = [
-  { id: "n1", title: "Verify your identity", body: "Upload a document to unlock withdrawals over 1,000 USD.", minutesAgo: 12, unread: true },
-  { id: "n2", title: "New: TradingView charts", body: "Advanced charts and tools for 24/7 Derived Indices.", minutesAgo: 90, unread: true },
-  { id: "n3", title: "Deposit received", body: "250.00 USD was credited to your USD Wallet.", minutesAgo: 42, unread: true },
-  { id: "n4", title: "Weekly market recap", body: "Volatility 75 (1s) moved 3.4% over the last 7 days.", minutesAgo: 600, unread: true },
-  { id: "n5", title: "Boom 1000 spike", body: "Boom 1000 Index printed a 1.8% spike in the last hour.", minutesAgo: 55, unread: true },
-  { id: "n6", title: "P2P order matched", body: "Order #48211 was matched with a verified buyer.", minutesAgo: 140, unread: true },
-  { id: "n7", title: "Two-factor authentication", body: "Turn on 2FA to protect withdrawals from your wallet.", minutesAgo: 320, unread: true },
-  { id: "n8", title: "New payment agent", body: "AbePay now settles KES deposits in under 5 minutes.", minutesAgo: 720, unread: true },
-  { id: "n9", title: "Statement ready", body: "Your monthly account statement is available to download.", minutesAgo: 2880, unread: false },
+  { id: "n1", title: "Reverification needed", body: "Your proof of identity needs to be resubmitted to keep withdrawals open.", minutesAgo: 14, unread: true },
+  { id: "n2", title: "AI market analysis is live", body: "Get AI-powered insights on Gold, BTC, Silver, ETH, and more.", minutesAgo: 95, unread: true },
+  { id: "n3", title: "Deposit received", body: "17.96 USD was credited to your US Dollar wallet.", minutesAgo: 260, unread: true },
+  { id: "n4", title: "Weekly market recap", body: "Volatility 75 (1s) moved 3.4% over the last 7 days.", minutesAgo: 900, unread: false },
+  { id: "n5", title: "Statement ready", body: "Your monthly account statement is available to download.", minutesAgo: 2880, unread: false },
 ];
 
 const Ctx = createContext<Store | null>(null);
@@ -161,27 +183,53 @@ export function Providers({ children }: { children: ReactNode }) {
   const say = useCallback((msg: string) => setToast(msg), []);
 
   const balanceOf = useCallback((a: Account) => (mode === "real" ? a.real : a.demo), [mode]);
+  const usdOf = useCallback(
+    (a: Account) => (mode === "real" ? a.real : a.demo) * (a.usdRate ?? 1),
+    [mode],
+  );
 
   const patch = useCallback(
     (id: string, delta: number) =>
       setAccounts((prev) =>
         prev.map((a) =>
           a.id === id
-            ? { ...a, [mode === "real" ? "real" : "demo"]: Math.max(0, (mode === "real" ? a.real : a.demo) + delta) }
+            ? {
+                ...a,
+                [mode === "real" ? "real" : "demo"]: Math.max(
+                  0,
+                  (mode === "real" ? a.real : a.demo) + delta,
+                ),
+              }
             : a,
         ),
       ),
     [mode],
   );
 
-  const pushTxn = useCallback((t: Omit<Txn, "id" | "minutesAgo">) => {
-    setTxns((prev) => [{ ...t, id: `t${prev.length + 1}-${prev.length}`, minutesAgo: 0 }, ...prev]);
-  }, []);
+  const today = "2026-08-24";
+
+  const pushTxn = useCallback(
+    (t: Omit<Txn, "id" | "date"> & { date?: string }) => {
+      setTxns((prev) => [
+        { ...t, date: t.date ?? today, id: `t${prev.length + 1}-${Math.round(t.amount * 100)}` },
+        ...prev,
+      ]);
+    },
+    [],
+  );
 
   const deposit = useCallback(
     (accountId: string, amount: number) => {
       patch(accountId, amount);
-      pushTxn({ label: "Deposit", method: "Card · Visa ••4242", amount, currency: "USD", status: "completed" });
+      pushTxn({
+        kind: "deposit",
+        label: "Deposit",
+        method: "Card · Visa ••4242",
+        amount,
+        currency: "USD",
+        status: "completed",
+        walletId: accountId,
+      });
       setUpdatedAt(Date.now());
       say(`Deposited ${amount.toFixed(2)} USD`);
     },
@@ -191,7 +239,15 @@ export function Providers({ children }: { children: ReactNode }) {
   const withdraw = useCallback(
     (accountId: string, amount: number) => {
       patch(accountId, -amount);
-      pushTxn({ label: "Withdrawal", method: "Payment agent · AbePay", amount, currency: "USD", status: "pending" });
+      pushTxn({
+        kind: "withdrawal",
+        label: "Withdrawal",
+        method: "Payment agent · AbePay",
+        amount,
+        currency: "USD",
+        status: "pending",
+        walletId: accountId,
+      });
       setUpdatedAt(Date.now());
       say(`Withdrawal of ${amount.toFixed(2)} USD requested`);
     },
@@ -202,11 +258,24 @@ export function Providers({ children }: { children: ReactNode }) {
     (fromId: string, toId: string, amount: number) => {
       patch(fromId, -amount);
       patch(toId, amount);
-      pushTxn({ label: "Transfer", method: "Between your accounts", amount, currency: "USD", status: "completed" });
+      pushTxn({
+        kind: "transfer",
+        label: "Transfer",
+        method: "Between your accounts",
+        amount,
+        currency: "USD",
+        status: "completed",
+        walletId: fromId,
+      });
       setUpdatedAt(Date.now());
       say(`Transferred ${amount.toFixed(2)} USD`);
     },
     [patch, pushTxn, say],
+  );
+
+  const markAllRead = useCallback(
+    () => setNotices((prev) => prev.map((n) => ({ ...n, unread: false }))),
+    [],
   );
 
   const resetDemo = useCallback(() => {
@@ -219,15 +288,12 @@ export function Providers({ children }: { children: ReactNode }) {
     setToast("Demo data reset");
   }, []);
 
-  const markAllRead = useCallback(
-    () => setNotices((prev) => prev.map((n) => ({ ...n, unread: false }))),
-    [],
-  );
-
   const value = useMemo<Store>(() => {
-    const cfdTotal = accounts.filter((a) => a.kind === "mt5").reduce((s, a) => s + balanceOf(a), 0);
-    const optionsTotal = accounts.filter((a) => a.kind === "options").reduce((s, a) => s + balanceOf(a), 0);
-    const walletTotal = accounts.filter((a) => a.kind === "wallet").reduce((s, a) => s + balanceOf(a), 0);
+    const wallets = accounts.filter((a) => a.kind === "wallet" || a.kind === "crypto");
+    const trading = accounts.filter((a) => a.kind === "mt5" || a.kind === "options");
+    const cfdTotal = accounts.filter((a) => a.kind === "mt5").reduce((s, a) => s + usdOf(a), 0);
+    const optionsTotal = accounts.filter((a) => a.kind === "options").reduce((s, a) => s + usdOf(a), 0);
+    const walletTotal = wallets.reduce((s, a) => s + usdOf(a), 0);
     return {
       mode,
       setMode,
@@ -237,7 +303,10 @@ export function Providers({ children }: { children: ReactNode }) {
       hidden,
       toggleHidden: () => setHidden((h) => !h),
       accounts,
+      wallets,
+      trading,
       balanceOf,
+      usdOf,
       cfdTotal,
       optionsTotal,
       walletTotal,
@@ -264,6 +333,7 @@ export function Providers({ children }: { children: ReactNode }) {
     hidden,
     accounts,
     balanceOf,
+    usdOf,
     txns,
     notices,
     markAllRead,
@@ -282,4 +352,14 @@ export function useStore() {
   const ctx = useContext(Ctx);
   if (!ctx) throw new Error("useStore must be used inside <Providers>");
   return ctx;
+}
+
+/** "August 24, 2026" — the date headers used in the statement views. */
+export function dayLabel(iso: string) {
+  const [y, m, d] = iso.split("-").map(Number);
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  return `${months[m - 1]} ${d}, ${y}`;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useStore } from "@/app/providers";
+import { useStore, USER } from "@/app/providers";
 import { BellIcon, EyeIcon, EyeOffIcon, SparkleIcon } from "./icons";
 import { Sheet } from "./Sheet";
 import { timeAgo } from "@/lib/format";
@@ -159,7 +159,7 @@ function AmySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
-export function Avatar({ initials = "SM" }: { initials?: string }) {
+export function Avatar({ initials = USER.initials }: { initials?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <>

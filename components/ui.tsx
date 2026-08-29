@@ -18,7 +18,7 @@ export function Amount({
   const sizes = {
     sm: "text-[15px] font-semibold",
     md: "text-xl font-bold",
-    lg: "text-[28px] leading-9 font-bold",
+    lg: "text-[23px] leading-8 font-bold",
     xl: "text-[34px] leading-10 font-bold tracking-tight",
   } as const;
   return (
@@ -78,13 +78,20 @@ export function CircleAction({
   onClick,
   primary,
   disabled,
+  tone = "dark",
 }: {
   icon: ReactNode;
   label: string;
   onClick?: () => void;
   primary?: boolean;
   disabled?: boolean;
+  /** "dark" sits on the hero panel, "light" on a grey surface. */
+  tone?: "dark" | "light";
 }) {
+  const ring =
+    tone === "dark"
+      ? "border border-white/35 text-white group-hover:bg-white/10"
+      : "border border-fg/25 text-fg group-hover:bg-fg/5";
   return (
     <button
       onClick={onClick}
@@ -92,15 +99,15 @@ export function CircleAction({
       className="tap group flex w-20 flex-col items-center gap-2 disabled:opacity-40"
     >
       <span
-        className={`flex h-14 w-14 items-center justify-center rounded-full ${
-          primary
-            ? "bg-coral text-white group-hover:bg-coral-hover"
-            : "border border-white/35 text-white group-hover:bg-white/10"
+        className={`flex h-[52px] w-[52px] items-center justify-center rounded-full ${
+          primary ? "bg-coral text-white group-hover:bg-coral-hover" : ring
         }`}
       >
         {icon}
       </span>
-      <span className="text-[13px] font-medium text-white/90">{label}</span>
+      <span className={`text-[13px] font-medium ${tone === "dark" ? "text-white/90" : "text-fg"}`}>
+        {label}
+      </span>
     </button>
   );
 }

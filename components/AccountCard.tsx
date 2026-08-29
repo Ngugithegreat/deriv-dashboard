@@ -4,42 +4,37 @@ import Link from "next/link";
 import type { Account } from "@/app/providers";
 import { useStore } from "@/app/providers";
 import { Amount } from "./ui";
-import { OptionsIcon, WalletIcon } from "./icons";
+import { FlagUSIcon, Mt5Badge, OptionsBadge, UsdcIcon } from "./icons";
 
-export function AccountBadge({ kind }: { kind: Account["kind"] }) {
-  if (kind === "mt5")
-    return (
-      <span className="flex h-11 w-11 flex-col items-center justify-center rounded-xl bg-[#0F5FCB] text-white shadow-sm">
-        <span className="text-[11px] font-black leading-none tracking-tight">MT5</span>
-        <span className="mt-0.5 rounded-sm bg-white/25 px-1 text-[7px] font-bold leading-[10px]">STD</span>
-      </span>
-    );
-  if (kind === "options")
-    return (
-      <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-coral text-white shadow-sm">
-        <OptionsIcon width={22} height={22} strokeWidth={2.2} />
-      </span>
-    );
+export function AccountMark({ account, size = 40 }: { account: Account; size?: number }) {
+  if (account.kind === "mt5") return <Mt5Badge tag={account.badge ?? "STD"} size={size} />;
+  if (account.kind === "options") return <OptionsBadge size={size} />;
+  if (account.kind === "crypto") return <UsdcIcon size={size - 6} />;
+  return <FlagUSIcon size={size - 6} />;
+}
+
+export function AccountTitle({ account }: { account: Account }) {
   return (
-    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ink-900 text-white shadow-sm">
-      <WalletIcon width={22} height={22} />
-    </span>
+    <>
+      {account.title}
+      {account.split && (
+        <>
+          <span className="mx-1.5 font-light text-line">|</span>
+          {account.split}
+        </>
+      )}
+    </>
   );
 }
 
+/** Tile used on Home and the CFDs screen. */
 export function AccountCard({ account, href }: { account: Account; href?: string }) {
   const { balanceOf } = useStore();
   const body = (
     <>
-      <AccountBadge kind={account.kind} />
-      <p className="mt-4 text-[17px] font-semibold">
-        {account.title}
-        {account.subtitle && account.kind === "mt5" && (
-          <>
-            <span className="mx-1.5 font-light text-line">|</span>
-            {account.subtitle}
-          </>
-        )}
+      <AccountMark account={account} />
+      <p className="mt-4 text-[16px] font-semibold">
+        <AccountTitle account={account} />
       </p>
       <div className="mt-1">
         <Amount value={balanceOf(account)} currency={account.currency} size="md" />
@@ -48,6 +43,36 @@ export function AccountCard({ account, href }: { account: Account; href?: string
   );
 
   const cls = "tap block rounded-2xl bg-surface-2 p-4 hover:bg-surface-3";
+  return href ? (
+    <Link href={href} className={cls}>
+      {body}
+    </Link>
+  ) : (
+    <div className={cls}>{body}</div>
+  );
+}
+
+/** Row used in the Portfolio lists. */
+export function AccountRow({ account, href }: { account: Account; href?: string }) {
+  const { balanceOf, usdOf } = useStore();
+  const body = (
+    <>
+      <AccountMark account={account} size={38} />
+      <span className="min-w-0 flex-1 truncate text-[16px] font-semibold">
+        <AccountTitle account={account} />
+      </span>
+      <span className="text-right">
+        <Amount value={balanceOf(account)} currency={account.currency} size="sm" />
+        {account.usdRate && (
+          <span className="mt-0.5 block text-xs text-muted">
+            {usdOf(account).toFixed(2)} USD
+          </span>
+        )}
+      </span>
+    </>
+  );
+  const cls =
+    "tap flex w-full items-center gap-3 border-b border-line py-3.5 text-left last:border-0";
   return href ? (
     <Link href={href} className={cls}>
       {body}

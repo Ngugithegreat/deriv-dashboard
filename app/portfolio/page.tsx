@@ -4,51 +4,46 @@ import { useState } from "react";
 import Link from "next/link";
 import { Hero } from "@/components/Hero";
 import { TopBar } from "@/components/TopBar";
-import { AccountCard } from "@/components/AccountCard";
+import { AccountRow } from "@/components/AccountCard";
 import { MoneySheet, type MoneyKind } from "@/components/MoneySheet";
-import { Amount, CircleAction, SectionTitle } from "@/components/ui";
+import { Amount, CircleAction, Segmented } from "@/components/ui";
 import {
-  AgentIcon,
   ChevronRight,
-  CryptoIcon,
-  DollarIcon,
   MinusIcon,
-  P2PIcon,
   PlusIcon,
   RefreshIcon,
   ShieldIcon,
   TransferIcon,
 } from "@/components/icons";
 import { useStore } from "../providers";
-import { timeAgo } from "@/lib/format";
 
-const TABS = ["Overview", "Wallet", "Partners", "Payment agents", "Trading"] as const;
+const TABS = ["Overview", "Wallet", "Partners", "Trading", "P2P"] as const;
 type Tab = (typeof TABS)[number];
 
-const METHODS = [
-  { id: "usd", title: "USD", body: "Fund via bank, card, e-wallet, and crypto.", Icon: DollarIcon },
-  { id: "agent", title: "Payment agent", body: "Deposit and withdraw in your local currency via a verified local agent.", Icon: AgentIcon },
-  { id: "p2p", title: "P2P", body: "Buy and sell USD with other traders. Deposit and withdraw in your local currency.", Icon: P2PIcon },
-  { id: "crypto", title: "Crypto", body: "Deposit and withdraw in Bitcoin, Ethereum, Tether and more.", Icon: CryptoIcon },
+const ADVERTS = [
+  { name: "AbePay", rate: 129.4, limits: "10 – 500 USD", methods: "M-Pesa, Bank transfer", orders: 812, rating: "99%" },
+  { name: "SwiftPesa", rate: 129.1, limits: "5 – 250 USD", methods: "M-Pesa", orders: 431, rating: "98%" },
+  { name: "NairaLink", rate: 128.8, limits: "20 – 1,000 USD", methods: "Bank transfer", orders: 1204, rating: "99%" },
 ];
 
-const AGENTS = [
-  { name: "AbePay", country: "Kenya · KES", fee: "0%", time: "~5 min", rating: "4.9" },
-  { name: "SwiftPesa", country: "Kenya · KES", fee: "1%", time: "~12 min", rating: "4.7" },
-  { name: "NairaLink", country: "Nigeria · NGN", fee: "0.5%", time: "~8 min", rating: "4.8" },
-  { name: "CediPay", country: "Ghana · GHS", fee: "1.2%", time: "~15 min", rating: "4.6" },
+const PARTNERS = [
+  { t: "Affiliate", d: "Earn up to 45% of net revenue from referred traders.", cta: "Join programme" },
+  { t: "Introducing broker", d: "Commission on every CFD lot your clients trade.", cta: "Apply as IB" },
+  { t: "Payment agent", d: "Serve traders in your country and earn on volume.", cta: "Become an agent" },
+  { t: "API developer", d: "Build your own terminal on the public WebSocket API.", cta: "Read the docs" },
 ];
 
 export default function PortfolioPage() {
-  const { accounts, estTotal, walletTotal, txns, updatedAt, refresh } = useStore();
+  const { wallets, trading, estTotal, refresh } = useStore();
   const [tab, setTab] = useState<Tab>("Overview");
   const [sheet, setSheet] = useState<MoneyKind | null>(null);
+  const [side, setSide] = useState<"buy" | "sell">("buy");
 
   return (
     <>
       <Hero>
         <TopBar />
-        <div className="no-bar mt-5 -mx-4 flex gap-6 overflow-x-auto px-4 lg:mx-0 lg:px-0">
+        <div className="no-bar -mx-4 mt-4 flex gap-6 overflow-x-auto px-4 lg:mx-0 lg:px-0">
           {TABS.map((t) => (
             <button
               key={t}
@@ -62,18 +57,16 @@ export default function PortfolioPage() {
             </button>
           ))}
         </div>
-        <div className="mt-5">
-          <p className="text-sm text-white/60">Est. total value</p>
-          <div className="mt-0.5 flex items-center gap-3">
-            <Amount value={estTotal} size="xl" />
+        <div className="mt-4">
+          <p className="text-[13px] text-white/60">Est. total value</p>
+          <div className="flex items-center gap-2">
+            <Amount value={estTotal} size="lg" />
             <button onClick={refresh} aria-label="Refresh" className="tap text-white/70 hover:text-white">
-              <RefreshIcon width={20} height={20} />
+              <RefreshIcon width={18} height={18} />
             </button>
           </div>
-          <p className="mt-1 text-sm text-white/50">
-            Updated {updatedAt ? timeAgo(updatedAt, Date.now()) : "—"}
-          </p>
-          <div className="mt-6 flex gap-6">
+          <p className="text-[13px] text-white/50">Updated just now</p>
+          <div className="mt-5 flex gap-6">
             <CircleAction icon={<PlusIcon width={24} height={24} />} label="Deposit" primary onClick={() => setSheet("deposit")} />
             <CircleAction icon={<TransferIcon width={22} height={22} />} label="Transfer" onClick={() => setSheet("transfer")} />
             <CircleAction icon={<MinusIcon width={24} height={24} />} label="Withdraw" onClick={() => setSheet("withdraw")} />
@@ -81,93 +74,45 @@ export default function PortfolioPage() {
         </div>
       </Hero>
 
-      <section className="rounded-t-3xl bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
-        {tab === "Overview" && (
+      <section className="bg-surface px-4 pt-6 lg:mt-6 lg:rounded-3xl lg:px-6">
+        {(tab === "Overview" || tab === "Wallet") && (
           <>
-            <SectionTitle>Browse all payment methods</SectionTitle>
-            <ul className="space-y-3">
-              {METHODS.map(({ id, title, body, Icon }) => (
-                <li key={id}>
-                  <button
-                    onClick={() => setSheet("deposit")}
-                    className="tap flex w-full items-center gap-4 rounded-2xl bg-surface-2 p-4 text-left hover:bg-surface-3"
-                  >
-                    <Icon width={26} height={26} className="shrink-0 text-fg" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-[17px] font-semibold">{title}</span>
-                      <span className="mt-0.5 block text-sm leading-5 text-muted">{body}</span>
-                    </span>
-                    <ChevronRight width={18} height={18} className="shrink-0 text-muted" />
-                  </button>
-                </li>
+            <h2 className="mb-1 text-[19px] font-bold tracking-tight">Wallet</h2>
+            <div>
+              {wallets.map((w) => (
+                <AccountRow key={w.id} account={w} href={`/wallet/${w.id}`} />
               ))}
-            </ul>
-
-            <div className="mt-7 pb-8">
-              <SectionTitle
-                action={
-                  <Link href="/transactions" className="flex items-center gap-0.5 text-sm font-semibold text-coral">
-                    Statement <ChevronRight width={15} height={15} />
-                  </Link>
-                }
-              >
-                Recent transactions
-              </SectionTitle>
-              <ul className="divide-y divide-line overflow-hidden rounded-2xl bg-surface-2">
-                {txns.map((t) => (
-                  <li key={t.id} className="flex items-center justify-between gap-3 px-4 py-3.5">
-                    <div className="min-w-0">
-                      <p className="truncate text-[15px] font-semibold">{t.label}</p>
-                      <p className="truncate text-xs text-muted">{t.method}</p>
-                    </div>
-                    <div className="text-right">
-                      <Amount value={t.amount} currency={t.currency} size="sm" />
-                      <p
-                        className={`text-xs font-semibold capitalize ${
-                          t.status === "completed" ? "text-mint" : t.status === "pending" ? "text-amber-500" : "text-coral"
-                        }`}
-                      >
-                        {t.status}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
             </div>
           </>
         )}
 
-        {tab === "Wallet" && (
-          <div className="pb-8">
-            <SectionTitle>Your wallets</SectionTitle>
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              {accounts.map((a) => (
-                <AccountCard key={a.id} account={a} />
+        {(tab === "Overview" || tab === "Trading") && (
+          <>
+            <h2 className="mb-1 mt-7 text-[19px] font-bold tracking-tight">Trading</h2>
+            <div>
+              {trading.map((t) => (
+                <AccountRow key={t.id} account={t} href={t.kind === "options" ? "/options" : "/cfds"} />
               ))}
             </div>
-            <div className="mt-6 rounded-2xl bg-surface-2 p-5">
-              <p className="text-sm text-muted">Available to withdraw</p>
-              <Amount value={walletTotal} size="lg" />
-              <button
-                onClick={() => setSheet("withdraw")}
-                className="tap mt-4 rounded-full bg-ink-900 px-6 py-3 text-sm font-bold text-white"
-              >
-                Withdraw funds
-              </button>
-            </div>
+          </>
+        )}
+
+        {(tab === "Overview" || tab === "Wallet" || tab === "Trading") && (
+          <div className="mt-7 flex justify-center pb-8">
+            <Link
+              href="/transactions"
+              className="tap flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[15px] font-semibold hover:bg-surface-2"
+            >
+              <TransferIcon width={18} height={18} /> View all transactions
+            </Link>
           </div>
         )}
 
         {tab === "Partners" && (
           <div className="pb-8">
-            <SectionTitle>Partnership programmes</SectionTitle>
+            <h2 className="mb-3 text-[19px] font-bold tracking-tight">Partnership programmes</h2>
             <div className="grid gap-3 sm:grid-cols-2">
-              {[
-                { t: "Affiliate", d: "Earn up to 45% of net revenue from referred traders.", cta: "Join programme" },
-                { t: "Introducing broker", d: "Commission on every CFD lot your clients trade.", cta: "Apply as IB" },
-                { t: "Payment agent", d: "Serve traders in your country and earn on volume.", cta: "Become an agent" },
-                { t: "API developer", d: "Build your own terminal on the public WebSocket API.", cta: "Read the docs" },
-              ].map((x) => (
+              {PARTNERS.map((x) => (
                 <div key={x.t} className="rounded-2xl bg-surface-2 p-5">
                   <p className="text-[17px] font-bold">{x.t}</p>
                   <p className="mt-1 text-sm leading-5 text-muted">{x.d}</p>
@@ -180,51 +125,56 @@ export default function PortfolioPage() {
           </div>
         )}
 
-        {tab === "Payment agents" && (
+        {tab === "P2P" && (
           <div className="pb-8">
-            <SectionTitle>Verified agents near you</SectionTitle>
-            <ul className="space-y-3">
-              {AGENTS.map((a) => (
-                <li key={a.name} className="flex items-center gap-4 rounded-2xl bg-surface-2 p-4">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ink-900 text-sm font-bold text-white">
-                    {a.name.slice(0, 2).toUpperCase()}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="flex items-center gap-1.5 text-[16px] font-semibold">
-                      {a.name}
-                      <ShieldIcon width={15} height={15} className="text-mint" />
-                    </p>
-                    <p className="text-xs text-muted">
-                      {a.country} · fee {a.fee} · {a.time} · ★ {a.rating}
-                    </p>
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-[19px] font-bold tracking-tight">Deriv P2P</h2>
+              <Segmented
+                tone="light"
+                value={side}
+                onChange={setSide}
+                options={[
+                  { value: "buy", label: "Buy" },
+                  { value: "sell", label: "Sell" },
+                ]}
+              />
+            </div>
+            <ul className="mt-3 space-y-3">
+              {ADVERTS.map((a) => (
+                <li key={a.name} className="rounded-2xl bg-surface-2 p-4">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-ink-900 text-xs font-bold text-white">
+                      {a.name.slice(0, 2).toUpperCase()}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="flex items-center gap-1.5 truncate text-[16px] font-semibold">
+                        {a.name}
+                        <ShieldIcon width={14} height={14} className="text-mint" />
+                      </p>
+                      <p className="text-xs text-muted">
+                        {a.orders} orders · {a.rating} completion
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[16px] font-bold tabular-nums">{a.rate.toFixed(2)}</p>
+                      <p className="text-xs text-muted">KES / USD</p>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => setSheet("deposit")}
-                    className="tap rounded-full bg-coral px-4 py-2 text-sm font-bold text-white"
-                  >
-                    Deposit
-                  </button>
+                  <div className="mt-3 flex items-end justify-between gap-3">
+                    <div className="text-xs text-muted">
+                      <p>Limits {a.limits}</p>
+                      <p className="mt-0.5">{a.methods}</p>
+                    </div>
+                    <button
+                      onClick={() => setSheet(side === "buy" ? "deposit" : "withdraw")}
+                      className="tap rounded-full bg-coral px-5 py-2 text-sm font-bold text-white"
+                    >
+                      {side === "buy" ? "Buy USD" : "Sell USD"}
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
-          </div>
-        )}
-
-        {tab === "Trading" && (
-          <div className="pb-8">
-            <SectionTitle>Open positions</SectionTitle>
-            <div className="rounded-2xl bg-surface-2 p-8 text-center">
-              <p className="text-[17px] font-semibold">No open positions</p>
-              <p className="mx-auto mt-1 max-w-xs text-sm text-muted">
-                Positions you open on Options or MT5 will appear here with live profit and loss.
-              </p>
-              <button
-                onClick={() => setSheet("deposit")}
-                className="tap mt-4 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white"
-              >
-                Fund and trade
-              </button>
-            </div>
           </div>
         )}
       </section>

@@ -10,14 +10,15 @@ there is no backend, no real account and no real money.
 
 | Route | Screen |
 | --- | --- |
-| `/` | Home — deposit hero, trading-account cards, promo carousel, explore grid, recent activity |
-| `/cfds` | CFDs — Real/Demo switch, total trading value, MT5 Standard account, spec grid, featured card |
-| `/options` | Options — total value, Trade/Transfer actions, most-traded markets with live sparklines |
-| `/portfolio` | Portfolio — Overview / Wallet / Partners / Payment agents / Trading tabs, payment methods, transactions |
+| `/` | Home — total value + Deposit, trading accounts, promo rail, Explore Deriv grid, What's new, Highlights |
+| `/cfds` | CFDs — Real/Demo, total trading value, MT5 accounts, Featured (Gold, Swap-Free), Available accounts |
+| `/options` | Options — most traded markets, Featured trade types, Platforms, the full trade-type grid |
+| `/portfolio` | Portfolio — Overview / Wallet / Partners / Trading / P2P tabs, wallet and trading lists |
+| `/wallet/[id]` | Wallet — balance, deposit/transfer/withdraw, filtered statement grouped by day |
+| `/transactions` | Every transaction across wallets, same statement layout |
 | `/markets` | Searchable instrument list (derived, forex, crypto) with a live feed |
 | `/markets/[id]` | Market detail — full-width live chart and a Rise/Fall trade ticket |
-| `/transactions` | Full statement — deposit/withdrawal/transfer filters and in/out/pending totals |
-| `/account` | Profile, verification badge, appearance + preferences, settings rows |
+| `/account` | Deriv-style settings: About you, Verification, Assessment, Security, API, Preferences, Support |
 
 ## Interactions that actually work
 

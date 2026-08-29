@@ -35,10 +35,11 @@ function seedFrom(id: string) {
 }
 
 export const MARKETS: Market[] = [
-  { id: "1HZ100V", name: "Volatility 100 (1s) Index", short: "V100", badge: "100", tick: "1s", price: 855.03, vol: 0.0016, digits: 2, group: "derived" },
-  { id: "1HZ75V", name: "Volatility 75 (1s) Index", short: "V75", badge: "75", tick: "1s", price: 6495.2, vol: 0.0013, digits: 2, group: "derived" },
-  { id: "1HZ10V", name: "Volatility 10 (1s) Index", short: "V10", badge: "10", tick: "1s", price: 9803.73, vol: 0.0004, digits: 2, group: "derived" },
-  { id: "1HZ50V", name: "Volatility 50 (1s) Index", short: "V50", badge: "50", tick: "1s", price: 221713.54, vol: 0.0009, digits: 2, group: "derived" },
+  { id: "1HZ100V", name: "Volatility 100 (1s) Index", short: "V100", badge: "100", tick: "1s", price: 832.19, vol: 0.0016, digits: 2, group: "derived" },
+  { id: "1HZ50V", name: "Volatility 50 (1s) Index", short: "V50", badge: "50", tick: "1s", price: 215589.49, vol: 0.0009, digits: 2, group: "derived" },
+  { id: "1HZ25V", name: "Volatility 25 (1s) Index", short: "V25", badge: "25", tick: "1s", price: 801294.73, vol: 0.0006, digits: 2, group: "derived" },
+  { id: "1HZ10V", name: "Volatility 10 (1s) Index", short: "V10", badge: "10", tick: "1s", price: 9860.73, vol: 0.0004, digits: 2, group: "derived" },
+  { id: "1HZ75V", name: "Volatility 75 (1s) Index", short: "V75", badge: "75", tick: "1s", price: 6605.54, vol: 0.0013, digits: 2, group: "derived" },
   { id: "BOOM1000", name: "Boom 1000 Index", short: "BOOM", badge: "B", tick: "2s", price: 12184.61, vol: 0.0011, digits: 2, group: "derived" },
   { id: "CRASH500", name: "Crash 500 Index", short: "CRASH", badge: "C", tick: "2s", price: 4881.9, vol: 0.0012, digits: 2, group: "derived" },
   { id: "frxEURUSD", name: "EUR/USD", short: "EURUSD", badge: "€", tick: "fx", price: 1.0842, vol: 0.0002, digits: 5, group: "forex" },

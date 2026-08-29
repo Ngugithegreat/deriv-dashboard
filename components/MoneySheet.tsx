@@ -95,7 +95,7 @@ export function MoneySheet({
       {insufficient && (
         <p className="mt-3 text-sm font-medium text-coral">
           Not enough funds in {source?.title}
-          {source?.subtitle ? ` ${source.subtitle}` : ""}.
+          {source?.split ? ` ${source.split}` : ""}.
         </p>
       )}
 
@@ -138,7 +138,7 @@ function Select({
           .map((a) => (
             <option key={a.id} value={a.id}>
               {a.title}
-              {a.subtitle && a.kind === "mt5" ? ` ${a.subtitle}` : ""} — {balanceOf(a).toFixed(2)} USD
+              {a.split ? ` ${a.split}` : ""} — {balanceOf(a).toFixed(2)} {a.currency}
             </option>
           ))}
       </select>
