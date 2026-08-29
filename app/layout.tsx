@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Paint the saved theme before first paint so there is no flash. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem("deriv-dashboard:v1");var t=s?(JSON.parse(s).theme||"system"):"system";if(t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})()`,
+            __html: `(function(){try{var s=localStorage.getItem("deriv-dashboard:v1");var t=s?(JSON.parse(s).theme||"light"):"light";if(t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})()`,
           }}
         />
       </head>

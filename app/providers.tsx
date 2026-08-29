@@ -105,7 +105,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const [txns, setTxns] = useState<Txn[]>(TXNS);
   const [updatedAt, setUpdatedAt] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
-  const [theme, setTheme] = useState<Theme>("system");
+  const [theme, setTheme] = useState<Theme>("light");
   const [loaded, setLoaded] = useState(false);
 
   /* Restore the saved session after mount so SSR and hydration agree. */
